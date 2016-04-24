@@ -18,5 +18,11 @@ public abstract class Osoba {
 	public String getNazwisko() {
 		return nazwisko;
 	}
+
+	@Override
+	public String toString() {
+		return imie + " " + nazwisko;
+	}
+	
 	
 }

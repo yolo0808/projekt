@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 public class MenuGlowne extends JFrame {
 	private PanelGlowny panelG;
 	private PanelSedziowie panelS;
+	private PanelRozgrywki panelR;
 	public static void main(String[] args){
 		new MenuGlowne();
 	}
@@ -15,10 +16,10 @@ public class MenuGlowne extends JFrame {
 		setVisible(true);
 		panelG = new PanelGlowny(this);
 		panelS = new PanelSedziowie(this);
-		
+		panelR = new PanelRozgrywki(this);
 		setContentPane(panelG);
 		revalidate();
-		
+		   
 	}
 
 	public PanelGlowny getPanelG() {
@@ -27,6 +28,10 @@ public class MenuGlowne extends JFrame {
 
 	public PanelSedziowie getPanelS() {
 		return panelS;
+	}
+
+	public PanelRozgrywki getPanelR() {
+		return panelR;
 	}
 	
 }
