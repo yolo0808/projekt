@@ -31,7 +31,6 @@ public class PanelSedziowie extends JPanel {
 		setLayout(new GridLayout(1, 2));
 		listaSedziowie = new JList<Sedzia>();
 		listaSedziowie.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
 		add(listaSedziowie);
 		JPanel panelPrawy = new JPanel(new GridLayout(5, 1));
 		add(panelPrawy);

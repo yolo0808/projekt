@@ -42,6 +42,16 @@ public class PanelGlowny extends JPanel {
 				menuGlowne.revalidate();
 			}
 		});
+		
+		przyciskDruzyny.addActionListener( new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				menuGlowne.setContentPane(menuGlowne.getPanelD());
+				menuGlowne.revalidate();
+				
+			}
+		});
 	}
 
 }

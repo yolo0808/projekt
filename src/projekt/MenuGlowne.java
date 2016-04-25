@@ -6,6 +6,7 @@ public class MenuGlowne extends JFrame {
 	private PanelGlowny panelG;
 	private PanelSedziowie panelS;
 	private PanelRozgrywki panelR;
+	private PanelDruzyny panelD;
 	public static void main(String[] args){
 		new MenuGlowne();
 	}
@@ -17,6 +18,7 @@ public class MenuGlowne extends JFrame {
 		panelG = new PanelGlowny(this);
 		panelS = new PanelSedziowie(this);
 		panelR = new PanelRozgrywki(this);
+		panelD = new PanelDruzyny(this);
 		setContentPane(panelG);
 		revalidate();
 		   
@@ -32,6 +34,9 @@ public class MenuGlowne extends JFrame {
 
 	public PanelRozgrywki getPanelR() {
 		return panelR;
+	}
+	public PanelDruzyny getPanelD(){
+		return panelD;
 	}
 	
 }
