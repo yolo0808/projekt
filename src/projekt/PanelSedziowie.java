@@ -131,4 +131,9 @@ public class PanelSedziowie extends JPanel {
 			e.printStackTrace();
 		}
 	}
+
+	public ArrayList<Sedzia> getListaSedziowie2() {
+		return listaSedziowie2;
+	}
+	
 }

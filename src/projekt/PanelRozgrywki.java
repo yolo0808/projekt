@@ -5,6 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
@@ -16,10 +21,10 @@ public class PanelRozgrywki extends JPanel {
 
 	private JButton stworzTurniej;
 	private JButton cofnij;
-	private JList<String> turnieje;
+	private JList<Turniejo> turnieje;
 	private JScrollPane jScrollPane2;
-	   
-   public PanelRozgrywki(MenuGlowne menuGlowne) {
+	private ArrayList<Turniejo> stworzonyT;   
+	public PanelRozgrywki(MenuGlowne menuGlowne) {
        initComponents(menuGlowne);
        
    }
@@ -27,17 +32,18 @@ public class PanelRozgrywki extends JPanel {
    private void initComponents(MenuGlowne menuGlowne) {
        java.awt.GridBagConstraints gridBagConstraints;
 
-       
+       stworzonyT = new ArrayList<Turniejo>();
        stworzTurniej = new JButton();
        cofnij = new JButton();
        jScrollPane2 = new JScrollPane();
-       turnieje = new JList<>();
+       turnieje = new JList<Turniejo>();
 
        setLayout(new GridBagLayout());
 
        stworzTurniej.setText("Stwórz turniej");
        stworzTurniej.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent evt) {
+        	   
            }
        });
        gridBagConstraints = new GridBagConstraints();
@@ -51,6 +57,15 @@ public class PanelRozgrywki extends JPanel {
        stworzTurniej.getAccessibleContext().setAccessibleName("stworzTurniej");
 
        cofnij.setText("Cofnij");
+       stworzTurniej.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			menuGlowne.getPanelST().odswiez();
+			menuGlowne.setContentPane(menuGlowne.getPanelST());
+			menuGlowne.revalidate();
+		}
+	});
        cofnij.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent evt) {
         	   menuGlowne.setContentPane(menuGlowne.getPanelG());
@@ -67,11 +82,7 @@ public class PanelRozgrywki extends JPanel {
        gridBagConstraints.insets = new Insets(46, 18, 19, 50);
        add(cofnij, gridBagConstraints);
 
-       turnieje.setModel(new AbstractListModel<String>() {
-           String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-           public int getSize() { return strings.length; }
-           public String getElementAt(int i) { return strings[i]; }
-       });
+      
        jScrollPane2.setViewportView(turnieje);
 
        gridBagConstraints = new GridBagConstraints();
@@ -86,5 +97,67 @@ public class PanelRozgrywki extends JPanel {
        gridBagConstraints.weighty = 1.0;
        gridBagConstraints.insets = new Insets(23, 38, 0, 0);
        add(jScrollPane2, gridBagConstraints);
-   }                                                       
+       
+       
+       wczytajTurnieje();
+       odswiez();
+   }
+
+   		public ArrayList<Turniejo> getStworzonyT() {
+   			return stworzonyT;
+}  	                                                     
+   public void odswiez(){
+	   Turniejo [] turniej = new Turniejo [stworzonyT.size()] ;
+		turniej = stworzonyT.toArray(turniej);
+		turnieje.setListData(turniej);
+		zapis();
+   }
+   
+	private void wczytajTurnieje() {
+		Scanner scr;
+		try {
+			scr = new Scanner(new File("turnieje"));
+			String t = scr.nextLine();
+			System.out.println(t);
+			String[] splitT = t.split(">");
+			stworzonyT = new ArrayList<Turniejo>();
+			for (String turniej : splitT) {
+				System.out.println(turniej);
+				String[] split2T = turniej.split("/");			
+				stworzonyT.add(new Turniejo(split2T[0], split2T[1], split2T[2], split2T[3]));
+			}
+			scr.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+   
+	private void zapis() {
+		PrintWriter zapis;
+		try {
+			zapis = new PrintWriter("turnieje");
+			for (Turniejo turniej : stworzonyT) {
+				zapis.print(turniej.getRodzaj());
+				zapis.print("/");
+				zapis.print(turniej.getDataUtworzenia());
+				zapis.print("/");
+				for(Druzyna d : turniej.getListaDruzynyT()){
+					zapis.print(d);
+					zapis.print(";");
+				}
+				zapis.print("/");
+				for(Sedzia s : turniej.getListaSedziowieT()){
+					zapis.print(s);
+					zapis.print(";");
+				}
+				zapis.print(">");
+			}
+
+			zapis.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

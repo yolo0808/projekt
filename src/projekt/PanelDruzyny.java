@@ -124,4 +124,9 @@ public class PanelDruzyny extends JPanel{
 			e.printStackTrace();
 		}
 	}
+
+	public ArrayList<Druzyna> getListaDruzyny2() {
+		return listaDruzyny2;
+	}
+	
 }
