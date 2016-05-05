@@ -16,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class PanelRozgrywki extends JPanel {
 
@@ -98,6 +100,16 @@ public class PanelRozgrywki extends JPanel {
        gridBagConstraints.insets = new Insets(23, 38, 0, 0);
        add(jScrollPane2, gridBagConstraints);
        
+       turnieje.addListSelectionListener(new ListSelectionListener() {
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			menuGlowne.setContentPane(new PanelTurniejow(menuGlowne, turnieje.getSelectedValue()));
+			menuGlowne.revalidate();
+			//System.out.println(turnieje.getSelectedIndex());
+		}
+	});
+       
        
        wczytajTurnieje();
        odswiez();
@@ -117,6 +129,10 @@ public class PanelRozgrywki extends JPanel {
 		Scanner scr;
 		try {
 			scr = new Scanner(new File("turnieje"));
+			if(!scr.hasNextLine()){
+				scr.close();
+				return;
+			}
 			String t = scr.nextLine();
 			System.out.println(t);
 			String[] splitT = t.split(">");
@@ -124,7 +140,7 @@ public class PanelRozgrywki extends JPanel {
 			for (String turniej : splitT) {
 				System.out.println(turniej);
 				String[] split2T = turniej.split("/");			
-				stworzonyT.add(new Turniejo(split2T[0], split2T[1], split2T[2], split2T[3]));
+				stworzonyT.add(new Turniejo(split2T[0], split2T[1], split2T[2], split2T[3], split2T[4]));
 			}
 			scr.close();
 		} catch (FileNotFoundException e) {
@@ -133,7 +149,7 @@ public class PanelRozgrywki extends JPanel {
 		}
 	}
    
-	private void zapis() {
+	public void zapis() {
 		PrintWriter zapis;
 		try {
 			zapis = new PrintWriter("turnieje");
@@ -151,6 +167,19 @@ public class PanelRozgrywki extends JPanel {
 					zapis.print(s);
 					zapis.print(";");
 				}
+				zapis.print("/");
+				String [][] mecze = turniej.getMecze();
+				for(int i=0; i<mecze.length; i++){
+					zapis.print(mecze[i][0]);
+					zapis.print(";");
+					zapis.print(mecze[i][1]);
+					zapis.print(";");
+					zapis.print(mecze[i][2]);
+					zapis.print(";");
+					zapis.print(mecze[i][3]);
+					zapis.print("<");
+				}
+				
 				zapis.print(">");
 			}
 
