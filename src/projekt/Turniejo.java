@@ -14,6 +14,7 @@ public class Turniejo {
 	private String[][] mecze;
 	private HashMap<String, Integer> tabela;
 	private String[][] posortowanaTabela;
+	private String[][] finaly;
 
 	public Turniejo(String rodzaj, String dataUtworzenia, String druzyny, String sedziowie, String meczes) {
 		System.out.println(rodzaj + " " + dataUtworzenia + " " + druzyny + " " + sedziowie);
@@ -32,17 +33,32 @@ public class Turniejo {
 		}
 
 		mecze = new String[d.length * (d.length - 1) / 2][4];
+		if(d.length > 3) {
+			finaly = new String[3][4];
+		}
+		else {
+			finaly = new String[1][4];
+		}
 		String[] m = meczes.split("<");
 		System.out.println(meczes);
-		int i = 0;
-		for (String m2 : m) {
+		for (int i=0; i<mecze.length; i++) {
+			String m2 = m[i];
 			System.out.println(m2);
 			String[] m2s = m2.split(";");
 			mecze[i][0] = m2s[0];
 			mecze[i][1] = m2s[1];
 			mecze[i][2] = m2s[2];
 			mecze[i][3] = m2s[3];
-			i++;
+		}
+		for (int i=mecze.length; i<mecze.length+finaly.length; i++) {
+			String m2 = m[i];
+			System.out.println(m2);
+			String[] m2s = m2.split(";");
+			finaly[i-mecze.length][0] = m2s[0];
+			finaly[i-mecze.length][1] = m2s[1];
+			finaly[i-mecze.length][2] = m2s[2];
+			finaly[i-mecze.length][3] = m2s[3];
+			System.out.println(finaly[i-mecze.length][3]);
 		}
 
 		tabela = new HashMap<String, Integer>();
@@ -56,6 +72,12 @@ public class Turniejo {
 		this.listaDruzynyT = listaDruzynyT;
 		this.rodzaj = rodzaj;
 		mecze = new String[listaDruzynyT.size() * (listaDruzynyT.size() - 1) / 2][4];
+		if(listaDruzynyT.size() > 3) {
+			finaly = new String[3][4];
+		}
+		else {
+			finaly = new String[1][4];
+		}
 		int k = 0;
 		for (int i = 0; i < listaDruzynyT.size(); i++) {
 			for (int j = i + 1; j < listaDruzynyT.size(); j++) {
@@ -83,6 +105,18 @@ public class Turniejo {
 			}
 		}
 	}
+	
+	public void setWynikFinalow(String d1, String w1, String w2, String d2) {
+		System.out.println(d1 + " " + w1 + " " + w2 + " " + d2);
+		for (String[] m : finaly) {
+			System.out.println(m[0] + " " + m[3]);
+			if (m[0] != null && m[0].equals(d1) && m[3].equals(d2)) {
+				m[1] = w1;
+				m[2] = w2;
+				break;
+			}
+		}
+	}
 
 	public void generujTabele() {
 		for(String s : tabela.keySet()){
@@ -106,6 +140,42 @@ public class Turniejo {
 		
 		sortuj();
 
+	}
+	
+	public void generujFinal() {
+		if(posortowanaTabela.length > 3) {
+			if(Integer.parseInt(finaly[0][1]) >= Integer.parseInt(finaly[0][2])) {
+				finaly[2][0] = finaly[0][0];
+			}
+			else {
+				finaly[2][0] = finaly[0][3];
+			}
+			if(Integer.parseInt(finaly[1][1]) >= Integer.parseInt(finaly[1][2])) {
+				finaly[2][3] = finaly[1][0];
+			}
+			else {
+				finaly[2][3] = finaly[1][3];	
+			}
+		}
+	}
+	
+	public void generujPolfinaly() {
+		if(posortowanaTabela.length > 3) {
+			finaly = new String[3][4];	
+		}
+		else {
+			finaly = new String[1][4];
+		}
+		if(posortowanaTabela.length > 3) {
+			finaly[0][0] = posortowanaTabela[0][0];
+			finaly[0][3] = posortowanaTabela[3][0];
+			finaly[1][0] = posortowanaTabela[1][0];
+			finaly[1][3] = posortowanaTabela[2][0];
+		}
+		else if(posortowanaTabela.length > 1) {
+			finaly[0][0] = posortowanaTabela[0][0];
+			finaly[0][3] = posortowanaTabela[1][0];
+		}
 	}
 
 	private void uzupelnijDruzyny() {
@@ -166,6 +236,10 @@ public class Turniejo {
 	}
 	public String[][] getPosortowanaTabela(){
 		return posortowanaTabela;
+	}
+
+	public String[][] getFinaly() {
+		return finaly;
 	}
 
 }

@@ -128,7 +128,7 @@ public class PanelRozgrywki extends JPanel {
 	private void wczytajTurnieje() {
 		Scanner scr;
 		try {
-			scr = new Scanner(new File("turnieje"));
+			scr = new Scanner(new File("turnieje2"));
 			if(!scr.hasNextLine()){
 				scr.close();
 				return;
@@ -152,7 +152,7 @@ public class PanelRozgrywki extends JPanel {
 	public void zapis() {
 		PrintWriter zapis;
 		try {
-			zapis = new PrintWriter("turnieje");
+			zapis = new PrintWriter("turnieje2");
 			for (Turniejo turniej : stworzonyT) {
 				zapis.print(turniej.getRodzaj());
 				zapis.print("/");
@@ -177,6 +177,18 @@ public class PanelRozgrywki extends JPanel {
 					zapis.print(mecze[i][2]);
 					zapis.print(";");
 					zapis.print(mecze[i][3]);
+					zapis.print("<");
+				}
+				
+				String [][] finaly = turniej.getFinaly();
+				for(int i=0; i<finaly.length; i++){
+					zapis.print(finaly[i][0]);
+					zapis.print(";");
+					zapis.print(finaly[i][1]);
+					zapis.print(";");
+					zapis.print(finaly[i][2]);
+					zapis.print(";");
+					zapis.print(finaly[i][3]);
 					zapis.print("<");
 				}
 				
