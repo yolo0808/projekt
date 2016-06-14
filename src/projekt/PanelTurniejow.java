@@ -182,14 +182,17 @@ public class PanelTurniejow extends JPanel {
 
 	private void zapiszFinal() {
 		TableModel model = finaly.getModel();
-		String wynik1s = (String) model.getValueAt(2, 1);
-		String wynik2s = (String) model.getValueAt(2, 2);
+		int indexFinalu = 2;
+		if(finaly.getRowCount() == 1)
+			indexFinalu = 0;
+		String wynik1s = (String) model.getValueAt(indexFinalu, 1);
+		String wynik2s = (String) model.getValueAt(indexFinalu, 2);
 		if (wynik1s == null || wynik2s == null || wynik1s.equals(null) || wynik2s.equals(null)) {
 			return;
 		}
 
-		turniejo.setWynikFinalow((String) model.getValueAt(2, 0), (String) model.getValueAt(2, 1),
-				(String) model.getValueAt(2, 2), (String) model.getValueAt(2, 3));
+		turniejo.setWynikFinalow((String) model.getValueAt(indexFinalu, 0), (String) model.getValueAt(indexFinalu, 1),
+				(String) model.getValueAt(indexFinalu, 2), (String) model.getValueAt(indexFinalu, 3));
 		
 		menuGlowne.getPanelR().zapis();
 	}
