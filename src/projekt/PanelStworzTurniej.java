@@ -41,8 +41,10 @@ public class PanelStworzTurniej extends JPanel {
 					d.add((Druzyna)o);
 				}
 				
+				menuGlowne.getPanelR().setNowyTurniej(true);
 				menuGlowne.getPanelR().getStworzonyT().add(new Turniejo( s,d,(String)listaRozgrywek.getSelectedItem()));
 				menuGlowne.getPanelR().odswiez();
+				menuGlowne.getPanelR().setNowyTurniej(false);
 			}
 		});
 		cofnij = new JButton("cofnij");		
